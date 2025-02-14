@@ -1,7 +1,8 @@
-
-
 import '../model/club.dart';
 import '../model/player.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 
 class DataService {
   static final DataService _instance = DataService._internal();
@@ -11,12 +12,14 @@ class DataService {
   }
 
   DataService._internal() {
+    fetchPlayers();
     _initializeData();
   }
 
   List<Club> _clubs = [];
   List<Player> _allPlayers = [];
   bool _isDataLoaded = false;
+  bool _isClubsLoaded = false;
 
   void _initializeData() {
     _clubs = [
@@ -134,7 +137,9 @@ class DataService {
     ];
 
     _allPlayers = _clubs.expand((club) => club.players).toList();
+    List<Club> _allClubs = [];
     _isDataLoaded = true;
+
     print('Data loaded successfully. Total clubs: ${_clubs.length}, Total players: ${_allPlayers.length}');
   }
 
@@ -173,4 +178,57 @@ class DataService {
   List<String> getAllClubs() {
     return ['All Clubs'] + _clubs.map((club) => club.clubName).toList();
   }
+
+  Future<List<dynamic>?> fetchPlayers() async {
+    try {
+      final response = await http.get(Uri.parse('https://fantasy-0ek6.onrender.com/api/players'));
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = jsonDecode(response.body);
+         _allPlayers = data.map((json) => Player.fromJson(json)).toList();
+        _isDataLoaded = true;
+        print('Players loaded successfully ${_allPlayers}');
+        return _allPlayers;
+      } else {
+        print('Failed to load players: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching players: $e');
+    }}
+
+    Future<void> fetchClubs() async {
+      try {
+        final response = await http.get(Uri.parse('https://fantasy-0ek6.onrender.com/api/clubs'));
+
+        if (response.statusCode == 200) {
+          List<dynamic> data = jsonDecode(response.body);
+          _clubs = data.map((json) => Club.fromJson(json)).toList();
+          _isClubsLoaded = true;
+          print('Players loaded successfully');
+        } else {
+          print('Failed to load players: ${response.statusCode}');
+        }
+      } catch (e) {
+        print('Error fetching players: $e');
+      }
+  }
+
+
+  Future<void> fetchLanding() async {
+    try {
+      final response = await http.get(Uri.parse('https://fantasy-0ek6.onrender.com/api/landing'));
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = jsonDecode(response.body);
+
+      }
+    }catch (e) {
+      print('Error fetching players: $e');
+    }
+
+  }
+
+
 }
+

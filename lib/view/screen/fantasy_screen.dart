@@ -1,4 +1,5 @@
 import 'package:dz_fantasy/view/screen/pickTeamName_Screen.dart';
+import 'package:dz_fantasy/view/screen/team_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -245,21 +246,29 @@ class _FantasyScreenState extends State<FantasyScreen> {
                               color: const Color(0xFF00FF9D),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(Icons.people, color: Colors.black),
-                                const SizedBox(width: 8),
-                                Text(
-                                  'Pick Team',
-                                  style: TextStyle(
-                                    color: Colors.grey[900],
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
+                            child: GestureDetector(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => TeamDetailsScreen()),
+                                );
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(Icons.people, color: Colors.black),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Pick Team',
+                                    style: TextStyle(
+                                      color: Colors.grey[900],
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
+                            )
                           ),
                         ),
                         const SizedBox(width: 8),
