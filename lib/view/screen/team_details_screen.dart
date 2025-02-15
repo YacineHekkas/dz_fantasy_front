@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -345,10 +347,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                       ),
                       const SizedBox(height: 20),
 
-                      // Display Selected Player (Optional)
 
-
-                      // List of Players
                       Expanded(
                         child: ListView.builder(
                           itemCount: teamPlayers.length, // Use teamPlayers map length
@@ -361,12 +360,12 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
 
                             return ListTile(
                               leading: Image.asset(
-                                player.kitImageUrl, // Player image
+                                "assets/${player.logoUrl}", // Player image
                                 width: 40,
                                 height: 40,
                                 fit: BoxFit.cover,
                               ),
-                            title: Text("${player.clubName} • ${player.position}"),
+                            title: Text("${player.clubId} • ${player.position}"),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -378,7 +377,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
-                                      "13pt",
+                                      "${Random().nextInt(100)} pt",
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold
@@ -474,7 +473,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              player.kitImageUrl,
+              "assets/${player.logoUrl}",
               height: 40,
               width: 40,
             ),

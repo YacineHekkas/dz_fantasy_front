@@ -65,6 +65,7 @@ flutter:
     - assets/translations/
     - assets/images/
     - assets/clubs/
+    - assets/Club_Kits/
     - assets/data/player_data.json
 
 

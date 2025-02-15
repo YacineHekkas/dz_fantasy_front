@@ -130,9 +130,9 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                               'bank'.tr(),
                               style: const TextStyle(color: Colors.white70, fontSize: 12),
                             ),
-                            const SizedBox(width: 30),
+                            const SizedBox(width: 15),
                             Text(
-                              '£${bank.toStringAsFixed(1)}m',
+                              ' DZD ${bank.toStringAsFixed(1)}m',
                               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                             ),
                           ],
@@ -159,37 +159,37 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _buildPlayerSlot('GK1', 'GKP'),
+                          _buildPlayerSlot('GK1', 'GK'),
                           const SizedBox(width: 25),
-                          _buildPlayerSlot('GK2', 'GKP'),
+                          _buildPlayerSlot('GK2', 'GK'),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          _buildPlayerSlot('DEF1', 'DEF'),
-                          _buildPlayerSlot('DEF2', 'DEF'),
-                          _buildPlayerSlot('DEF3', 'DEF'),
-                          _buildPlayerSlot('DEF4', 'DEF'),
-                          _buildPlayerSlot('DEF5', 'DEF'),
+                          _buildPlayerSlot('DEF1', 'DF'),
+                          _buildPlayerSlot('DEF2', 'DF'),
+                          _buildPlayerSlot('DEF3', 'DF'),
+                          _buildPlayerSlot('DEF4', 'DF'),
+                          _buildPlayerSlot('DEF5', 'DF'),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          _buildPlayerSlot('MID1', 'MID'),
-                          _buildPlayerSlot('MID2', 'MID'),
-                          _buildPlayerSlot('MID3', 'MID'),
-                          _buildPlayerSlot('MID4', 'MID'),
-                          _buildPlayerSlot('MID5', 'MID'),
+                          _buildPlayerSlot('MID1', 'MF'),
+                          _buildPlayerSlot('MID2', 'MF'),
+                          _buildPlayerSlot('MID3', 'MF'),
+                          _buildPlayerSlot('MID4', 'MF'),
+                          _buildPlayerSlot('MID5', 'MF'),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          _buildPlayerSlot('FWD1', 'FWD'),
-                          _buildPlayerSlot('FWD2', 'FWD'),
-                          _buildPlayerSlot('FWD3', 'FWD'),
+                          _buildPlayerSlot('FWD1', 'FW'),
+                          _buildPlayerSlot('FWD2', 'FW'),
+                          _buildPlayerSlot('FWD3', 'FW'),
                         ],
                       ),
                       const SizedBox(height: 15),
@@ -274,11 +274,11 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
             : Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              player.kitImageUrl,
-              height: 40,
-              width: 40,
-            ),
+        Image.asset(
+        "assets/${player.logoUrl}",
+          height: 40,
+          width: 40,
+        ),
             Text(
               player.name,
               style: const TextStyle(
@@ -290,7 +290,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
               overflow: TextOverflow.ellipsis,
             ),
             Text(
-              '£${player.price}m',
+              'DZD ${player.price}m',
               style: const TextStyle(
                 color: Colors.white70,
                 fontSize: 10,

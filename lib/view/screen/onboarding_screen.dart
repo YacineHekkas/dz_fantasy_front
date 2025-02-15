@@ -3,8 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../component/actionButton.dart';
+
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
+  static const List<String> kitImages = [
+    'akbou_kit.png',
+    'asoc_kit.png',
+    'bayadh_kit.png',
+    'crb_kit.png',
+    'csc_kit.png',
+    'esm_kit.png',
+    'ess_kit.png',
+    'jsk_kit.png',
+    'mco_kit.png',
+    'nmagra_kit.png',
+    'parado_kit.png',
+    'saoura_kit.png',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +57,7 @@ class OnboardingScreen extends StatelessWidget {
                   child: Text(
                     'skip'.tr(),
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 16,
                     ),
                   ),
@@ -53,7 +69,7 @@ class OnboardingScreen extends StatelessWidget {
                 child: Text(
                   'pick_teams'.tr(),
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                   ),
@@ -94,7 +110,7 @@ class OnboardingScreen extends StatelessWidget {
                 child: Text(
                   'teams_in_competition'.tr(),
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -111,15 +127,21 @@ class OnboardingScreen extends StatelessWidget {
                       mainAxisSpacing: gridSpacing,
                       childAspectRatio: 0.8,
                     ),
-                    itemCount: 12,
+                    itemCount: kitImages.length, // Updated itemCount
                     itemBuilder: (context, index) {
+                      final String teamName =
+                      kitImages[index].split('_')[0].toUpperCase();
                       return Column(
                         children: [
                           Container(
                             width: logoSize,
                             height: logoSize,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              image: DecorationImage(
+                                image: AssetImage(
+                                    'assets/clubs/${kitImages[index]}'),
+                                fit: BoxFit.cover,
+                              ),
                               borderRadius: BorderRadius.circular(logoSize / 2),
                               boxShadow: [
                                 BoxShadow(
@@ -129,13 +151,13 @@ class OnboardingScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            // Add team logo here
+                            clipBehavior: Clip.antiAlias,
                           ),
                           SizedBox(height: screenHeight * 0.01),
                           Text(
-                            'Team ${index + 1}',
+                            teamName,
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.white, // Changed to white for visibility
                               fontSize: screenWidth * 0.03,
                             ),
                             textAlign: TextAlign.center,
@@ -149,28 +171,23 @@ class OnboardingScreen extends StatelessWidget {
                 ),
               ),
 
+
               // Continue Button
               Padding(
                 padding: EdgeInsets.all(paddingHorizontal),
                 child: SizedBox(
                   width: double.infinity,
                   height: buttonHeight,
-                  child: ElevatedButton(
-                    onPressed: () => _finishOnboarding(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF00BCD4),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(buttonHeight / 2),
-                      ),
-                    ),
-                    child: Text(
-                      'continue'.tr(),
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.04,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                  child:
+                  ActionButton(
+                      text: 'continue'.tr(),
+                      backgroundColor: const Color(0xFF00FF9D),
+                      textColor: Colors.black,
+                      onPressed: ()
+                      {_finishOnboarding(context);
+                      }
+                  )
+
                 ),
               ),
             ],

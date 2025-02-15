@@ -1,9 +1,12 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:dz_fantasy/view/screen/pickTeamName_Screen.dart';
 import 'package:dz_fantasy/view/screen/team_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../../controller/dataService.dart';
 import '../component/actionButton.dart';
 
 
@@ -16,6 +19,7 @@ class FantasyScreen extends StatefulWidget {
 
 class _FantasyScreenState extends State<FantasyScreen> {
   bool decide = false;
+  int points = 0;
 
   @override
   void initState() {
@@ -164,9 +168,9 @@ class _FantasyScreenState extends State<FantasyScreen> {
                               color: Colors.white.withOpacity(0.2),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Text(
-                                '-',
+                                '${points}',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 24,
@@ -179,7 +183,7 @@ class _FantasyScreenState extends State<FantasyScreen> {
                           Row(
                             children: [
                               Text(
-                                'Points',
+                                'Points ',
                                 style: TextStyle(
                                   color: Colors.white.withOpacity(0.8),
                                   fontSize: 16,
@@ -195,24 +199,15 @@ class _FantasyScreenState extends State<FantasyScreen> {
                         ],
                       ),
                       Column(
-                        children: [
-                          Row(
-                            children: [
-                              const Text(
-                                '201',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 36,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const Icon(
-                                Icons.arrow_forward,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                            ],
+                        children: [Text(
+                          '201',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 36,
+                            fontWeight: FontWeight.bold,
                           ),
+                        ),
+
                           Text(
                             'Highest',
                             style: TextStyle(
@@ -228,7 +223,7 @@ class _FantasyScreenState extends State<FantasyScreen> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      'Gameweek 25 Deadline: Fri 14 Feb, 19:30',
+                      'Gameweek  Deadline: Fri 14 Feb, 19:30',
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.9),
                         fontSize: 14,
@@ -300,20 +295,77 @@ class _FantasyScreenState extends State<FantasyScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF00FF9D),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Gameweek 25 Team News',
-                        style: TextStyle(
-                          color: Colors.grey[900],
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                  GestureDetector(
+                    onTap: () async {
+                      final prefs = await SharedPreferences.getInstance();
+                      final savedTeam = prefs.getString('savedTeam');
+
+                      if (savedTeam != null) {
+                        final teamData = jsonDecode(savedTeam);
+                        final players = teamData['players'] as Map<String, dynamic>;
+
+
+
+                        final random = Random();
+                        int totalPoints = 0;
+
+                        players.forEach((key, value) {
+                          // Generate random performance metrics
+                          final isGoalkeeperOrDefender = ['Goalkeeper', 'Defender'].contains(value['position']);
+                          final goals = random.nextInt(3); // 0-2 goals (60% chance of 0)
+                          final assists = random.nextInt(2); // 0-1 assists (50% chance of 0)
+                          final cleanSheets = isGoalkeeperOrDefender ? random.nextInt(2) : 0; // 0-1
+                          final yellowCards = random.nextInt(3); // 0-2
+                          final redCards = random.nextInt(5) == 0 ? 1 : 0; // 20% chance of red card
+
+                          // Calculate points
+                          int playerPoints = (goals * 5) +
+                              (assists * 3) +
+                              (cleanSheets * 4) -
+                              (yellowCards * 2) -
+                              (redCards * 5);
+
+                          // 30% chance to get 0 points regardless of performance
+                          if (random.nextInt(10) < 3) playerPoints = 0;
+
+                          totalPoints += playerPoints;
+                        });
+
+                        setState(() {
+                          points += totalPoints; // Update points
+                        });
+
+                        // Show results
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text("Gameweek Results"),
+                            content: Text("Your team scored $points points!"),
+                            actions: [
+                              TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text("OK")
+                              )
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF00FF9D),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Start Gameweek ',
+                          style: TextStyle(
+                            color: Colors.grey[900],
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),

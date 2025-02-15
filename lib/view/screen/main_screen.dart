@@ -1,8 +1,11 @@
 import 'package:dz_fantasy/view/screen/fantasy_screen.dart';
+import 'package:dz_fantasy/view/screen/settings.dart';
 import 'package:dz_fantasy/view/screen/team_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'latest.dart';
 import 'latest_screen.dart';
+import 'leaderboard.dart';
 import 'stats_screen.dart';
 import 'more_screen.dart';
 
@@ -17,10 +20,10 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    const LatestScreen(),
+    const LatestMatchesScreen(),
     const FantasyScreen(),
-    const StatsScreen(),
-    const MoreScreen(),
+    const LeaderboardScreen(),
+    const SettingsScreen(),
   ];
 
   @override
